@@ -8,14 +8,12 @@
 #include <iostream>
 #include <sstream>
 
-using namespace cv;
-using namespace dnn;
-using namespace std;
+
 
 class Type
 {
     public:
-    virtual void detect(Net& net, vector<string>& classes) = 0; //pure virtual function
+    virtual void detect(cv::dnn::Net& net, std::vector<std::string>& classes) = 0; //pure virtual function
 
     virtual ~Type() = default; // virtual destructor
 };

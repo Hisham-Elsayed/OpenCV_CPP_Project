@@ -1,11 +1,19 @@
 #include "videoDetection.h"
 #include "yolo.h"
 
-VideoDetector::VideoDetector(const string &path) : videoPath(path){}
+using namespace cv;
+using namespace dnn;
+using namespace std;
 
-void VideoDetector::detect(Net &net, vector<std::string>& classes)
+VideoDetector::VideoDetector(const std::string &path) : videoPath(path){}
+
+void VideoDetector::detect(cv::dnn::Net &net, std::vector<std::string>& classes)
 {
     VideoCapture cap(videoPath);
+    if (!cap.isOpened()) {
+        cerr << "Error opening video\n";
+        return ;
+    }
 
     //Get Video properties
     int width = static_cast<int>(cap.get(cv::CAP_PROP_FRAME_WIDTH));

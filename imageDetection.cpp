@@ -1,7 +1,11 @@
 #include "imageDetection.h"
 #include "yolo.h"
 
-ImageDetector::ImageDetector(const string &path) : imagePath(path){}
+using namespace cv;
+using namespace dnn;
+using namespace std;
+
+ImageDetector::ImageDetector(const std::string &path) : imagePath(path){}
 
 void ImageDetector::detect(cv::dnn::Net& net, std::vector<std::string>& classes)
 {

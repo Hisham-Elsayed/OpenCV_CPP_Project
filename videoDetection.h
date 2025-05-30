@@ -6,11 +6,11 @@
 class VideoDetector : public Type
 {
     public:
-    VideoDetector(const string &path);
-    void detect(Net &net, vector<std::string>& classes) override;
+    VideoDetector(const std::string &path);
+    void detect(cv::dnn::Net &net, std::vector<std::string>& classes) override;
 
     private:
-    string videoPath;
+    std::string videoPath;
 };
 
 

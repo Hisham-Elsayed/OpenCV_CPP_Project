@@ -6,6 +6,10 @@
 
 #include <memory>
 
+using namespace cv;
+using namespace dnn;
+using namespace std;
+
 int main() {
     cv::utils::logging::setLogLevel(cv::utils::logging::LOG_LEVEL_SILENT);  //silence logs
 
@@ -35,13 +39,7 @@ int main() {
     for (auto& detector : detectors) {
         detector->detect(net, classes);
     }
-
-    
-
  
-    // cam.setCam(0);
-    // cam.detectWebcam(cam.getCam(),net,classes);
-    
     destroyAllWindows();
     return 0;
 }

@@ -1,9 +1,13 @@
 #include "cameraDetection.h"
 #include "yolo.h"
 
+using namespace cv;
+using namespace dnn;
+using namespace std;
+
 CameraDetector::CameraDetector(const int &path) : cam(path){}
 
-void CameraDetector::detect(Net &net, vector<std::string>& classes)
+void CameraDetector::detect(cv::dnn::Net &net, std::vector<std::string>& classes)
 {
     VideoCapture cap(cam);        //to use webcam
     if (!cap.isOpened()) {

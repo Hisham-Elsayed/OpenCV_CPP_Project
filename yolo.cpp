@@ -5,6 +5,9 @@ float nmsThreshold = 0.4;
 int inpWidth = 416;
 int inpHeight = 416;
 
+using namespace cv;
+using namespace dnn;
+using namespace std;
 
 vector<string> getOutputsNames(const Net& net) {
     static vector<string> names;
