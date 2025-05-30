@@ -1,4 +1,5 @@
 //#include "opencv_project.h"
+
 #include <opencv2/opencv.hpp>
 #include <opencv2/dnn.hpp>
 #include <fstream>
@@ -8,6 +9,8 @@
 using namespace cv;
 using namespace dnn;
 using namespace std;
+
+
 
 float confThreshold = 0.5;
 float nmsThreshold = 0.4;
@@ -72,7 +75,10 @@ void postprocess(Mat& frame, const vector<Mat>& outs, Net& net, vector<string>& 
                  boxes[idx].x + boxes[idx].width, boxes[idx].y + boxes[idx].height, frame, classes);
 }
 
-void detectPhoto(const string& imagePath, Net& net, vector<string>& classes) {
+class Type
+{
+public:
+void detectImage(const string& imagePath, Net& net, vector<string>& classes) {
     Mat image = imread(imagePath);
 
     if (image.empty()) {
@@ -170,6 +176,45 @@ void detectVideo(const string &video, Net &net, vector<string> &classes)
     cap.release();
 }
 
+// Setters
+void setImage(string image)
+{
+    this->imagePath = image;
+}
+
+void setVideo(string video)
+{
+    this->videoPath = video;
+}
+
+void setCam(int webcam)
+{
+    this->cam = webcam;
+}
+
+// Getters
+string getImage()
+{
+    return this->imagePath;
+}
+
+string getVideo()
+{
+    return this->videoPath;
+}
+
+int getCam()
+{
+    return this->cam;
+}
+
+
+private:
+ string imagePath;
+ string videoPath;
+ int cam;
+
+};
 
 int main() {
     cv::utils::logging::setLogLevel(cv::utils::logging::LOG_LEVEL_SILENT);  //silence logs
@@ -189,15 +234,15 @@ int main() {
     net.setPreferableBackend(DNN_BACKEND_OPENCV);
     net.setPreferableTarget(DNN_TARGET_CPU);
 
-    string imagePath = "/Hisham/YOLO_test/YOLO_practice/img.jpg";
+    Type image, video, cam;
+    image.setImage("/Hisham/YOLO_test/YOLO_practice/img.jpg");
+    image.detectImage(image.getImage(),net,classes);
 
-    string videoPath = "/Hisham/YOLO_test/YOLO_practice/object_detection_test.mp4";
-
-    detectPhoto(imagePath,net,classes);
-
-    detectWebcam(0,net,classes);
-
-    detectVideo(videoPath,net,classes);
+    video.setVideo("/Hisham/YOLO_test/YOLO_practice/object_detection_test.mp4");
+    video.detectVideo(video.getVideo(),net,classes);
+    
+    cam.setCam(0);
+    cam.detectWebcam(cam.getCam(),net,classes);
     
     destroyAllWindows();
     return 0;
