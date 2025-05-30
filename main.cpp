@@ -28,14 +28,13 @@ int main() {
     net.setPreferableBackend(DNN_BACKEND_OPENCV);
     net.setPreferableTarget(DNN_TARGET_CPU);
 
-    std::vector<std::unique_ptr<Type>> detectors;
 
-    // Add detectors (only if files exist or flags are set)
-    detectors.push_back(std::make_unique<ImageDetector>("/Hisham/YOLO_test/YOLO_practice/img.jpg"));
-    detectors.push_back(std::make_unique<VideoDetector>("/Hisham/YOLO_test/YOLO_practice/object_detection_test.mp4"));
-    detectors.push_back(std::make_unique<CameraDetector>(0)); 
+    vector<unique_ptr<Type>> detectors;
 
-    // Loop through each and run detection
+    detectors.push_back(make_unique<ImageDetector>("/Hisham/YOLO_test/YOLO_practice/img.jpg"));
+    detectors.push_back(make_unique<VideoDetector>("/Hisham/YOLO_test/YOLO_practice/object_detection_test.mp4"));
+    detectors.push_back(make_unique<CameraDetector>(0)); 
+
     for (auto& detector : detectors) {
         detector->detect(net, classes);
     }

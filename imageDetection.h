@@ -1,5 +1,5 @@
-#ifndef IMAGE_H
-#define IMAGE_H
+#ifndef IMAGE_DETECTION_H
+#define IMAGE_DETECTION_H
 
 #include "type.h"
 
@@ -13,8 +13,6 @@ class ImageDetector : public Type
     private:
     std::string imagePath;
 };
-
-
 
 
 
