@@ -14,8 +14,8 @@ int main() {
     cv::utils::logging::setLogLevel(cv::utils::logging::LOG_LEVEL_SILENT);  //silence logs
 
     string classesFile = "/yolo/coco.names";
-    string modelConfiguration = "/yolo/yolov3.cfg";
-    string modelWeights = "/yolo/yolov3.weights";
+    string modelConfiguration = "/yolo/yolov4-tiny.cfg";
+    string modelWeights = "/yolo/yolov4-tiny.weights";
 
    
 
