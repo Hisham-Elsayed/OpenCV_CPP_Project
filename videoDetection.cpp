@@ -21,6 +21,7 @@ void VideoDetector::detect(cv::dnn::Net &net, std::vector<std::string>& classes)
     double fps = cap.get(cv::CAP_PROP_FPS);
     int codec = static_cast<int>(cap.get(cv::CAP_PROP_FOURCC));
 
+    
     std::cout << "Video Properties:\n"
     << "Resolution: " << width << "x" << height << "\n"
     << "FPS: " << fps << std::endl;
@@ -38,7 +39,13 @@ void VideoDetector::detect(cv::dnn::Net &net, std::vector<std::string>& classes)
         net.forward(outs, getOutputsNames(net));
 
         postprocess(frame, outs, net, classes);
-        imshow("YOLOv3 Detection (Video)", frame);
+
+        windowName = "YOLOv4-tiny video Detection";
+
+        // Display the image with resizable window
+        namedWindow(windowName, WINDOW_NORMAL); 
+
+        imshow(windowName, frame);
         if (waitKey(1) == 'q') break;
     }
 }

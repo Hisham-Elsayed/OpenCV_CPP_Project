@@ -16,6 +16,9 @@ class Type
     virtual void detect(cv::dnn::Net& net, std::vector<std::string>& classes) = 0; //pure virtual function
 
     virtual ~Type() = default; // virtual destructor
+
+    protected:
+    std::string windowName;
 };
 
 #endif

@@ -30,7 +30,12 @@ void ImageDetector::detect(cv::dnn::Net& net, std::vector<std::string>& classes)
     // Process detections and draw bounding boxes
     postprocess(image, outs, net, classes);
 
+    windowName = "YOLOv4-tiny Image Detection";
+    
+    // Display the image with resizable window
+    namedWindow(windowName, WINDOW_NORMAL); 
+
     // Display the image
-    imshow("YOLOv3 Image Detection", image);
+    imshow(windowName, image);
     waitKey(0); // Wait for any key press to close the window
 }

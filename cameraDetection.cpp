@@ -15,10 +15,6 @@ void CameraDetector::detect(cv::dnn::Net &net, std::vector<std::string>& classes
         return ;
     }
 
-    // cap.set(cv::CAP_PROP_FRAME_WIDTH, 1920);  //Set width to 1920 (1080p)
-    // cap.set(cv::CAP_PROP_FRAME_HEIGHT, 1080); //Set height to 1080
-
-   
     Mat frame;
     int skip_frames = 2; // skip every 2 frames
     int frame_count = 0;
@@ -35,7 +31,13 @@ void CameraDetector::detect(cv::dnn::Net &net, std::vector<std::string>& classes
         net.forward(outs, getOutputsNames(net));
 
         postprocess(frame, outs, net, classes);
-        imshow("YOLOv3 Detection (Webcam)", frame);
+
+        windowName = "YOLOv4-tiny Camera Detection";
+
+        // Display the image with resizable window
+        namedWindow(windowName, WINDOW_NORMAL); 
+
+        imshow(windowName, frame);
         if (waitKey(1) == 'q') break;
     }
 

@@ -31,7 +31,7 @@ int main() {
 
     vector<unique_ptr<Type>> detectors;
 
-    detectors.push_back(make_unique<ImageDetector>("/Hisham/YOLO_test/YOLO_practice/img.jpg"));
+    detectors.push_back(make_unique<ImageDetector>("/Hisham/YOLO_test/YOLO_practice/dog_bike_car.jpg"));
     detectors.push_back(make_unique<VideoDetector>("/Hisham/YOLO_test/YOLO_practice/object_detection_test.mp4"));
     detectors.push_back(make_unique<CameraDetector>(0)); 
 
