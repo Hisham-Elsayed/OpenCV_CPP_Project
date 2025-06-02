@@ -26,7 +26,7 @@ OpenCV_CPP_Project is a C++ application that demonstrates object detection capab
 ├── imageDetection.cpp         # Implementation for image-based detection
 ├── imageDetection.h           # Header for image detection
 ├── img.jpg                    # Sample image for testing
-├── dog_bike_car.jpg                    # Sample image for testing
+├── dog_bike_car.jpg           # Sample image for testing
 ├── main.cpp                   # Entry point of the application
 ├── object_detection_test.mp4  # Sample video for testing
 ├── type.h                     # Definitions of custom data types
@@ -105,10 +105,6 @@ The project integrates the YOLO algorithm for object detection. Ensure that the 
 ## Contributing
 
 Contributions are welcome! Please fork the repository and submit a pull request with your enhancements.
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
 
