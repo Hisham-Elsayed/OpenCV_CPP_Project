@@ -24,7 +24,7 @@ vector<string> getOutputsNames(const Net& net) {
 void drawPred(int classId, float conf, int left, int top, int right, int bottom, Mat& frame, vector<string>& classes) {
     rectangle(frame, Point(left, top), Point(right, bottom), Scalar(0, 255, 0), 3);
     string label = format("%.2f", conf);
-    if (!classes.empty() && classId < (int)classes.size())
+    if (!classes.empty() && classId < static_cast<int>(classes.size()))
         label = classes[classId] + ":" + label;
     int baseLine;
     Size labelSize = getTextSize(label, FONT_HERSHEY_SIMPLEX, 0.5, 1, &baseLine);
@@ -46,10 +46,10 @@ void postprocess(Mat& frame, const vector<Mat>& outs, Net& net, vector<string>& 
             double confidence;
             minMaxLoc(scores, 0, &confidence, 0, &classIdPoint);
             if (confidence > confThreshold) {
-                int centerX = (int)(out.at<float>(i, 0) * frame.cols);
-                int centerY = (int)(out.at<float>(i, 1) * frame.rows);
-                int width   = (int)(out.at<float>(i, 2) * frame.cols);
-                int height  = (int)(out.at<float>(i, 3) * frame.rows);
+                int centerX = static_cast<int>(out.at<float>(i, 0) * frame.cols);
+                int centerY = static_cast<int>(out.at<float>(i, 1) * frame.rows);
+                int width   = static_cast<int>(out.at<float>(i, 2) * frame.cols);
+                int height  = static_cast<int>(out.at<float>(i, 3) * frame.rows);
                 int left    = centerX - width / 2;
                 int top     = centerY - height / 2;
 
