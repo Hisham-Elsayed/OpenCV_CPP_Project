@@ -1,7 +1,7 @@
 #include "yolo.h"
 
-float confThreshold = 0.5;
-float nmsThreshold = 0.4;
+float confThreshold = 0.5f;
+float nmsThreshold = 0.4f;
 int inpWidth = 416;
 int inpHeight = 416;
 

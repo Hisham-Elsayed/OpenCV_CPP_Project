@@ -33,6 +33,7 @@ int main() {
 
     detectors.push_back(make_unique<ImageDetector>("/Hisham/YOLO_test/YOLO_practice/dog_bike_car.jpg"));
     detectors.push_back(make_unique<VideoDetector>("/Hisham/YOLO_test/YOLO_practice/object_detection_test.mp4"));
+    detectors.push_back(make_unique<VideoDetector>("/Hisham/YOLO_test/YOLO_practice/Vehicle Dataset Sample 2.mp4"));
     detectors.push_back(make_unique<CameraDetector>(0)); 
 
     for (auto& detector : detectors) {
