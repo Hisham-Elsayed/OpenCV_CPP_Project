@@ -9,6 +9,11 @@ using namespace cv;
 using namespace dnn;
 using namespace std;
 
+/**
+ * @brief Get the names of the output layers of the network.
+ * @param net Reference to the loaded YOLO network.
+ * @return Vector of output layer names.
+ */
 vector<string> getOutputsNames(const Net& net) {
     static vector<string> names;
     if (names.empty()) {
@@ -21,6 +26,17 @@ vector<string> getOutputsNames(const Net& net) {
     return names;
 }
 
+/**
+ * @brief Draws a predicted bounding box with label on the frame.
+ * @param classId Class index.
+ * @param conf Confidence score.
+ * @param left Left coordinate of bounding box.
+ * @param top Top coordinate of bounding box.
+ * @param right Right coordinate of bounding box.
+ * @param bottom Bottom coordinate of bounding box.
+ * @param frame Frame to draw on.
+ * @param classes Vector of class names.
+ */
 void drawPred(int classId, float conf, int left, int top, int right, int bottom, Mat& frame, vector<string>& classes) {
     rectangle(frame, Point(left, top), Point(right, bottom), Scalar(0, 255, 0), 3);
     string label = format("%.2f", conf);
@@ -34,6 +50,13 @@ void drawPred(int classId, float conf, int left, int top, int right, int bottom,
     putText(frame, label, Point(left, top), FONT_HERSHEY_SIMPLEX, 0.5, Scalar(), 1);
 }
 
+/**
+ * @brief Process the network outputs and draw bounding boxes on the frame.
+ * @param frame Frame to draw on.
+ * @param outs Network outputs.
+ * @param net Reference to the loaded YOLO network.
+ * @param classes Vector of class names.
+ */
 void postprocess(Mat& frame, const vector<Mat>& outs, Net& net, vector<string>& classes) {
     vector<int> classIds;
     vector<float> confidences;

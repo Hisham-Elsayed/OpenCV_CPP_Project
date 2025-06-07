@@ -5,8 +5,17 @@ using namespace cv;
 using namespace dnn;
 using namespace std;
 
+/**
+ * @brief Constructs an ImageDetector with the given image path.
+ * @param path Path to the image file.
+ */
 ImageDetector::ImageDetector(const std::string &path) : imagePath(path){}
 
+/**
+ * @brief Detects objects in the image and displays the result.
+ * @param net Reference to the loaded YOLO network.
+ * @param classes Vector of class names.
+ */
 void ImageDetector::detect(cv::dnn::Net& net, std::vector<std::string>& classes)
 {
     Mat image = imread(imagePath);

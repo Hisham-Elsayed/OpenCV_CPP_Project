@@ -5,8 +5,17 @@ using namespace cv;
 using namespace dnn;
 using namespace std;
 
+/**
+ * @brief Constructs a VideoDetector with the given video path.
+ * @param path Path to the video file.
+ */
 VideoDetector::VideoDetector(const std::string &path) : videoPath(path){}
 
+/**
+ * @brief Detects objects in the video and displays the result frame by frame.
+ * @param net Reference to the loaded YOLO network.
+ * @param classes Vector of class names.
+ */
 void VideoDetector::detect(cv::dnn::Net &net, std::vector<std::string>& classes)
 {
     VideoCapture cap(videoPath);
@@ -42,7 +51,7 @@ void VideoDetector::detect(cv::dnn::Net &net, std::vector<std::string>& classes)
 
         windowName = "YOLOv4-tiny video Detection";
 
-        // Display the image with resizable window
+        // Display the video with resizable window
         namedWindow(windowName, WINDOW_NORMAL); 
 
         imshow(windowName, frame);

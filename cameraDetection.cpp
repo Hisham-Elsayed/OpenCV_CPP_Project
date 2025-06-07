@@ -5,8 +5,17 @@ using namespace cv;
 using namespace dnn;
 using namespace std;
 
+/**
+ * @brief Constructs a CameraDetector with the given camera index.
+ * @param path Camera index (usually 0 for default camera).
+ */
 CameraDetector::CameraDetector(const int &path) : cam(path){}
 
+/**
+ * @brief Detects objects from the camera feed and displays the result in real time.
+ * @param net Reference to the loaded YOLO network.
+ * @param classes Vector of class names.
+ */
 void CameraDetector::detect(cv::dnn::Net &net, std::vector<std::string>& classes)
 {
     VideoCapture cap(cam);        //to use webcam
@@ -34,7 +43,7 @@ void CameraDetector::detect(cv::dnn::Net &net, std::vector<std::string>& classes
 
         windowName = "YOLOv4-tiny Camera Detection";
 
-        // Display the image with resizable window
+        // Display the camera with resizable window
         namedWindow(windowName, WINDOW_NORMAL); 
 
         imshow(windowName, frame);
