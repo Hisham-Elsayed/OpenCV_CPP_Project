@@ -28,6 +28,11 @@ void CameraDetector::detect(cv::dnn::Net &net, std::vector<std::string>& classes
     int skip_frames = 2; // skip every 2 frames
     int frame_count = 0;
 
+    windowName = "YOLOv4-tiny Camera Detection";
+    
+    // Display the camera with resizable window
+    namedWindow(windowName, WINDOW_NORMAL); 
+
     while (cap.read(frame)) {
         frame_count++;
         if (frame_count % skip_frames != 0) continue; // skip frame
@@ -40,11 +45,6 @@ void CameraDetector::detect(cv::dnn::Net &net, std::vector<std::string>& classes
         net.forward(outs, getOutputsNames(net));
 
         postprocess(frame, outs, net, classes);
-
-        windowName = "YOLOv4-tiny Camera Detection";
-
-        // Display the camera with resizable window
-        namedWindow(windowName, WINDOW_NORMAL); 
 
         imshow(windowName, frame);
         if (waitKey(1) == 'q') break;

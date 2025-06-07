@@ -9,6 +9,7 @@
  */
 class VideoDetector : public Type
 {
+   public:
    /**
      * @brief Constructor.
      * @param path Path to the video file.

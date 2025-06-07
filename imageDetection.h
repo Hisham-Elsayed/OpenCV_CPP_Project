@@ -10,7 +10,6 @@
 class ImageDetector : public Type
 {
     public:
-      public:
     /**
      * @brief Constructor.
      * @param path Path to the image file.

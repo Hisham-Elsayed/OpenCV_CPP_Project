@@ -6,6 +6,8 @@
 
 #include <memory>
 
+#include <direct.h>
+
 using namespace cv;
 using namespace dnn;
 using namespace std;
@@ -29,6 +31,12 @@ int main() {
     string modelConfiguration = "/yolo/yolov4-tiny.cfg";
     string modelWeights = "/yolo/yolov4-tiny.weights";
 
+    // Check if YOLO files exist
+    ifstream checkYolo(classesFile);
+    if (!checkYolo) {
+        cerr << "Failed to find YOLO files in: /yolo/" << endl;
+        return 1;
+    }
    
     // Load class names from file
     vector<string> classes;
@@ -45,16 +53,18 @@ int main() {
     vector<unique_ptr<Type>> detectors;
 
     // Add detectors for image, video, and camera sources
-    detectors.push_back(make_unique<ImageDetector>("/Hisham/YOLO_test/YOLO_practice/dog_bike_car.jpg"));
-    detectors.push_back(make_unique<VideoDetector>("/Hisham/YOLO_test/YOLO_practice/object_detection_test.mp4"));
-    detectors.push_back(make_unique<VideoDetector>("/Hisham/YOLO_test/YOLO_practice/Vehicle Dataset Sample 2.mp4"));
-    detectors.push_back(make_unique<CameraDetector>(0)); 
+    detectors.emplace_back(make_unique<ImageDetector>("../Samples/Images/dog_bike_car.jpg"));
+    detectors.emplace_back(make_unique<VideoDetector>("../Samples/Videos/object_detection_test.mp4"));
+    detectors.emplace_back(make_unique<VideoDetector>("../Samples/Videos/Vehicle Dataset Sample 2.mp4"));
+    detectors.emplace_back(make_unique<CameraDetector>(0)); 
 
     // Run detection for each detector
     for (auto& detector : detectors) {
         detector->detect(net, classes);
     }
- 
+
+    cout << "Current working directory: " << _getcwd(NULL, 0) << endl;
+
     // Close all OpenCV windows
     destroyAllWindows();
     

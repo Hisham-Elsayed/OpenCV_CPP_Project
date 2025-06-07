@@ -38,7 +38,12 @@ void VideoDetector::detect(cv::dnn::Net &net, std::vector<std::string>& classes)
     int skip_frames = 2; // skip every 2 frames
     int frame_count = 0;
 
-     while (cap.read(frame)) {
+    windowName = "YOLOv4-tiny video Detection";
+
+    // Display the video with resizable window
+    namedWindow(windowName, WINDOW_NORMAL); 
+
+    while (cap.read(frame)) {
         frame_count++;
         if (frame_count % skip_frames != 0) continue; // skip frame
         Mat blob;
@@ -48,11 +53,6 @@ void VideoDetector::detect(cv::dnn::Net &net, std::vector<std::string>& classes)
         net.forward(outs, getOutputsNames(net));
 
         postprocess(frame, outs, net, classes);
-
-        windowName = "YOLOv4-tiny video Detection";
-
-        // Display the video with resizable window
-        namedWindow(windowName, WINDOW_NORMAL); 
 
         imshow(windowName, frame);
         if (waitKey(1) == 'q') break;

@@ -25,15 +25,19 @@ OpenCV_CPP_Project is a C++ application that demonstrates object detection capab
 ├── cameraDetection.h          # Header for camera detection
 ├── imageDetection.cpp         # Implementation for image-based detection
 ├── imageDetection.h           # Header for image detection
-├── img.jpg                    # Sample image for testing
-├── dog_bike_car.jpg           # Sample image for testing
 ├── main.cpp                   # Entry point of the application
-├── object_detection_test.mp4  # Sample video for testing
 ├── type.h                     # Definitions of custom data types
 ├── videoDetection.cpp         # Implementation for video-based detection
 ├── videoDetection.h           # Header for video detection
 ├── yolo.cpp                   # YOLO algorithm implementation
 └── yolo.h                     # Header for YOLO implementation
+├── Samples/                   # Sample files for testing
+│   ├── Images/                # Test images
+│   │   └── dog_bike_car.jpg
+│   │   └── img.jpg
+│   └── Videos/                # Test videos
+│       └── object_detection_test.mp4
+
 ```
 
 ## Prerequisites
@@ -42,17 +46,26 @@ OpenCV_CPP_Project is a C++ application that demonstrates object detection capab
 - **Compiler:** C++17 compatible compiler (e.g., GCC, Clang, MSVC).
 - **CMake:** Version 3.10 or higher.
 - **OpenCV:** Version 4.x installed and configured.
+- **YOLO Files:** YOLOv4-tiny files in `C:\yolo\`
+
 
 ## Installation
 
-1. **Clone the Repository:**
+1. **YOLO Setup:**
+   - Create directory: `C:\yolo\`
+   - Download and place these files:
+     - `coco.names`
+     - `yolov4-tiny.cfg`
+     - `yolov4-tiny.weights`
+
+2. **Clone the Repository:**
 
    ```bash
    git clone https://github.com/Hisham-Elsayed/OpenCV_CPP_Project.git
    cd OpenCV_CPP_Project
    ```
 
-2. **Build the Project:**
+3. **Build the Project:**
 
    ```bash
    mkdir build
@@ -65,38 +78,10 @@ OpenCV_CPP_Project is a C++ application that demonstrates object detection capab
 
 ## Usage
 
-After building the project, you can execute the application with different modes:
-
-```bash
-./OpenCV_CPP_Project [mode] [input_path]
-```
-
-- `[mode]`: Specify the mode of operation:
-  - `image`: Process a static image.
-  - `video`: Process a video file.
-  - `camera`: Use the connected camera for real-time detection.
-
-- `[input_path]`: Path to the input file (image or video). Not required for `camera` mode.
-
-### Examples
-
-- **Image Detection:**
-
-  ```bash
-  ./OpenCV_CPP_Project image ../img.jpg
-  ```
-
-- **Video Detection:**
-
-  ```bash
-  ./OpenCV_CPP_Project video ../object_detection_test.mp4
-  ```
-
-- **Camera Detection:**
-
-  ```bash
-  ./OpenCV_CPP_Project camera
-  ```
+The application will automatically process:
+- Image files from `Samples/Images/`
+- Video files from `Samples/Videos/`
+- Camera feed (if available)
 
 ## YOLO Integration
 
@@ -109,4 +94,5 @@ Contributions are welcome! Please fork the repository and submit a pull request 
 ## Acknowledgments
 
 - [OpenCV](https://github.com/opencv/opencv) for providing the computer vision library.
+- [YOLOv4](https://github.com/AlexeyAB/darknet)
 - The creators of the YOLO algorithm for their groundbreaking work in real-time object detection.
