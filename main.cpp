@@ -3,10 +3,7 @@
 #include "imageDetection.h"
 #include "videoDetection.h"
 #include "cameraDetection.h"
-
 #include <memory>
-
-#include <direct.h>
 
 using namespace cv;
 using namespace dnn;
@@ -63,7 +60,6 @@ int main() {
         detector->detect(net, classes);
     }
 
-    cout << "Current working directory: " << _getcwd(NULL, 0) << endl;
 
     // Close all OpenCV windows
     destroyAllWindows();
