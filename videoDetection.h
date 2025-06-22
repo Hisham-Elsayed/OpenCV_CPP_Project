@@ -2,6 +2,7 @@
 #define VIDEO_DETECTION_H
 
 #include "type.h"
+#include "yolo.h"
 
 /**
  * @class VideoDetector
@@ -13,19 +14,18 @@ class VideoDetector : public Type
    /**
      * @brief Constructor.
      * @param path Path to the video file.
+     * @param yolo Reference to a YoloDetector instance to use for detection.
      */
-    VideoDetector(const std::string &path);
+    VideoDetector(const std::string &path, YoloDetector& yolo);
 
     /**
      * @brief Detect objects in the video using the given network and class names.
-     * @param net Reference to the loaded YOLO network.
-     * @param classes Vector of class names.
      */
-    void detect(cv::dnn::Net &net, const std::vector<std::string>& classes) override;
+    void detect() override;
 
     private:
-    // Path to the video file.
-    std::string videoPath;
+    std::string videoPath;      // Path to the video file.
+    YoloDetector& yolo;
 };
 
 

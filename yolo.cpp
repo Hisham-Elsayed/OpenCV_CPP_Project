@@ -6,35 +6,51 @@ using namespace cv;
 using namespace dnn;
 using namespace std;
 
-/**
- * @brief Get the names of the output layers of the network.
- * @param net Reference to the loaded YOLO network.
- * @return Reference of vector of output layer names.
- */
-const vector<string>& getOutputsNames(const Net& net) {
-    static vector<string> names;
-    if (names.empty()) {
-        vector<int> outLayers = net.getUnconnectedOutLayers();
-        vector<string> layersNames = net.getLayerNames();
-        names.resize(outLayers.size());
-        for (size_t i = 0; i < outLayers.size(); ++i)
-            names[i] = layersNames[outLayers[i] - 1];
+YoloDetector::YoloDetector(const std::string& class_file, const std::string& config_file, const std::string& weights_file) : classesFile(class_file),
+                                                                                        modelConfiguration(config_file),
+                                                                                        modelWeights(weights_file)   
+{}
+
+bool YoloDetector::load()
+{
+    // Check if YOLO files exist
+    ifstream checkYolo(classesFile);
+    if (!checkYolo) {
+        cerr << "Failed to find YOLO files in: /yolo/" << endl;
+        return false;
     }
+   
+    // Load class names from file
+    classes.clear();
+    ifstream ifs(classesFile.c_str());
+    string line;
+    while (getline(ifs, line)) classes.push_back(line);
+
+    // Load YOLO network from configuration and weights
+    net = readNetFromDarknet(modelConfiguration, modelWeights);
+    net.setPreferableBackend(DNN_BACKEND_OPENCV);
+    net.setPreferableTarget(DNN_TARGET_CPU);
+
+    return !classes.empty();
+}
+
+Net& YoloDetector::getNet()
+{
+    return net;
+}
+
+vector<string> YoloDetector::getOutputsNames() const
+{
+    vector<string> names;
+    vector<int> outLayers = net.getUnconnectedOutLayers();
+    vector<string> layersNames = net.getLayerNames();
+    names.resize(outLayers.size());
+    for (size_t i = 0; i < outLayers.size(); ++i)
+        names[i] = layersNames[outLayers[i] - 1];
     return names;
 }
 
-/**
- * @brief Draws a predicted bounding box with label on the frame.
- * @param classId Class index.
- * @param conf Confidence score.
- * @param left Left coordinate of bounding box.
- * @param top Top coordinate of bounding box.
- * @param right Right coordinate of bounding box.
- * @param bottom Bottom coordinate of bounding box.
- * @param frame Frame to draw on.
- * @param classes Vector of class names.
- */
-void drawPred(int classId, float conf, int left, int top, int right, int bottom, Mat& frame, const vector<string>& classes) {
+void YoloDetector::drawPred(int classId, float conf, int left, int top, int right, int bottom, Mat& frame) {
     rectangle(frame, Point(left, top), Point(right, bottom), Scalar(0, 255, 0), 3);
     string label = format("%.2f", conf);
     if (!classes.empty() && classId < static_cast<int>(classes.size()))
@@ -47,18 +63,13 @@ void drawPred(int classId, float conf, int left, int top, int right, int bottom,
     putText(frame, label, Point(left, top), FONT_HERSHEY_SIMPLEX, 0.5, Scalar(), 1);
 }
 
-/**
- * @brief Process the network outputs and draw bounding boxes on the frame.
- * @param frame Frame to draw on.
- * @param outs Network outputs.
- * @param net Reference to the loaded YOLO network.
- * @param classes Vector of class names.
- */
-void postprocess(Mat& frame, const vector<Mat>& outs, Net& net, const vector<string>& classes) {
+
+void YoloDetector::postprocess(Mat& frame, const vector<Mat>& outs) {
     vector<int> classIds;
     vector<float> confidences;
     vector<Rect> boxes;
 
+    // Parse the outputs
     for (const Mat& out : outs) {
         for (int i = 0; i < out.rows; ++i) {
             Mat scores = out.row(i).colRange(5, out.cols);
@@ -80,9 +91,10 @@ void postprocess(Mat& frame, const vector<Mat>& outs, Net& net, const vector<str
         }
     }
 
+    // Perform non-maximum suppression and draw results
     vector<int> indices;
     NMSBoxes(boxes, confidences, confThreshold, nmsThreshold, indices);
     for (int idx : indices)
         drawPred(classIds[idx], confidences[idx], boxes[idx].x, boxes[idx].y,
-                 boxes[idx].x + boxes[idx].width, boxes[idx].y + boxes[idx].height, frame, classes);
+                 boxes[idx].x + boxes[idx].width, boxes[idx].y + boxes[idx].height, frame);
 }

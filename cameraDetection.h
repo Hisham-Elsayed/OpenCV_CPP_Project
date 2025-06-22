@@ -2,6 +2,7 @@
 #define CAMERA_DETECTION
 
 #include "type.h"
+#include "yolo.h"
 
 /**
  * @class CameraDetector
@@ -12,20 +13,19 @@ class CameraDetector : public Type
     public:
     /**
      * @brief Constructor.
-     * @param path Camera index (usually 0 for default camera).
+     * @param camIndex Camera index (usually 0 for default camera).
+     * @param yolo Reference to a YoloDetector instance to use for detection.
      */
-    CameraDetector(const int &path);
+    CameraDetector(const int &camIndex, YoloDetector& yolo);
 
     /**
      * @brief Detect objects from the camera using the given network and class names.
-     * @param net Reference to the loaded YOLO network.
-     * @param classes Vector of class names.
      */
-    void detect(cv::dnn::Net &net, const std::vector<std::string> &classes) override;
+    void detect() override;
 
     private:
-    // Camera index.
-    int cam;
+    int cam;    // Camera index.
+    YoloDetector& yolo;
 
 };
 

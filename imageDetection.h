@@ -2,6 +2,7 @@
 #define IMAGE_DETECTION_H
 
 #include "type.h"
+#include "yolo.h"
 
 /**
  * @class ImageDetector
@@ -13,20 +14,19 @@ class ImageDetector : public Type
     /**
      * @brief Constructor.
      * @param path Path to the image file.
+     * @param yolo Reference to a YoloDetector instance to use for detection.
      */
-    ImageDetector(const std::string &path);
+    ImageDetector(const std::string &path, YoloDetector& yolo);
 
      /**
      * @brief Detect objects in the image using the given network and class names.
-     * @param net Reference to the loaded YOLO network.
-     * @param classes Vector of class names.
      */
-    void detect(cv::dnn::Net& net, const std::vector<std::string>& classes) override;
+    void detect() override;
 
 
     private:
-    // Path to the image file.
-    std::string imagePath;
+    std::string imagePath;      // Path to the image file.
+    YoloDetector& yolo;
 };
 
 

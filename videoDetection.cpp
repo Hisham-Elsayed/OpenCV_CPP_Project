@@ -8,15 +8,14 @@ using namespace std;
 /**
  * @brief Constructs a VideoDetector with the given video path.
  * @param path Path to the video file.
+ * @param yolo Reference to a YoloDetector instance to use for detection.
  */
-VideoDetector::VideoDetector(const std::string &path) : videoPath(path){}
+VideoDetector::VideoDetector(const std::string &path, YoloDetector& yolo) : videoPath(path), yolo(yolo){}
 
 /**
  * @brief Detects objects in the video and displays the result frame by frame.
- * @param net Reference to the loaded YOLO network.
- * @param classes Vector of class names.
  */
-void VideoDetector::detect(cv::dnn::Net &net, const std::vector<std::string>& classes)
+void VideoDetector::detect()
 {
     VideoCapture cap(videoPath);
     if (!cap.isOpened()) {
@@ -38,7 +37,7 @@ void VideoDetector::detect(cv::dnn::Net &net, const std::vector<std::string>& cl
     int skip_frames = 2; // skip every 2 frames
     int frame_count = 0;
 
-    windowName = "YOLOv4-tiny video Detection";
+    windowName = "Video Detection";
 
     // Display the video with resizable window
     namedWindow(windowName, WINDOW_NORMAL); 
@@ -47,12 +46,12 @@ void VideoDetector::detect(cv::dnn::Net &net, const std::vector<std::string>& cl
         frame_count++;
         if (frame_count % skip_frames != 0) continue; // skip frame
         Mat blob;
-        blobFromImage(frame, blob, 1/255.0, Size(inpWidth, inpHeight), Scalar(0,0,0), true, false);
-        net.setInput(blob);
+        blobFromImage(frame, blob, 1/255.0, Size(YoloDetector::inpWidth, YoloDetector::inpHeight), Scalar(0,0,0), true, false);
+        yolo.getNet().setInput(blob);
         vector<Mat> outs;
-        net.forward(outs, getOutputsNames(net));
+        yolo.getNet().forward(outs, yolo.getOutputsNames());
 
-        postprocess(frame, outs, net, classes);
+        yolo.postprocess(frame, outs);
 
         imshow(windowName, frame);
         if (waitKey(1) == 'q') break;

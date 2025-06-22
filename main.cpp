@@ -14,8 +14,11 @@ using namespace std;
 /**
  * @brief Entry point for the YOLO Object Detection application.
  * 
- * This function initializes the YOLO model, loads class names, and creates detector objects
- * for image, video, and camera sources. It then runs detection for each source.
+ * This function demonstrates a modern, OOP-based approach to running YOLO object detection
+ * on images, videos, and live camera streams. It initializes multiple YOLO models, loads class names,
+ * and creates detector objects for each input source. Each detector composes a YoloDetector instance,
+ * allowing for flexible use of different YOLO models per source. All detectors are managed polymorphically
+ * via a common base class, enabling easy extension and maintenance.
  * 
  * @return int Returns 0 on successful execution.
  */
@@ -25,39 +28,31 @@ int main() {
 
     // File paths for YOLO model and class names
     string classesFile = "/yolo/coco.names";
+
     string modelConfiguration = "/yolo/yolov4-tiny.cfg";
     string modelWeights = "/yolo/yolov4-tiny.weights";
 
-    // Check if YOLO files exist
-    ifstream checkYolo(classesFile);
-    if (!checkYolo) {
-        cerr << "Failed to find YOLO files in: /yolo/" << endl;
-        return 1;
-    }
-   
-    // Load class names from file
-    vector<string> classes;
-    ifstream ifs(classesFile.c_str());
-    string line;
-    while (getline(ifs, line)) classes.push_back(line);
+    string model2 = "/yolo/yolov4.cfg";
+    string weight2 ="/yolo/yolov4.weights";
 
-    // Load YOLO network from configuration and weights
-    Net net = readNetFromDarknet(modelConfiguration, modelWeights);
-    net.setPreferableBackend(DNN_BACKEND_OPENCV);
-    net.setPreferableTarget(DNN_TARGET_CPU);
+    YoloDetector yolov4_tiny(classesFile,modelConfiguration,modelWeights);
+    yolov4_tiny.load();
+
+    YoloDetector yolov4(classesFile,model2,weight2);
+    yolov4.load();
 
     // Create a vector of unique pointers to different detector types
     vector<unique_ptr<Type>> detectors;
 
     // Add detectors for image, video, and camera sources
-    detectors.emplace_back(make_unique<ImageDetector>("../Samples/Images/dog_bike_car.jpg"));
-    detectors.emplace_back(make_unique<VideoDetector>("../Samples/Videos/object_detection_test.mp4"));
-    detectors.emplace_back(make_unique<VideoDetector>("../Samples/Videos/Vehicle Dataset Sample 2.mp4"));
-    detectors.emplace_back(make_unique<CameraDetector>(0)); 
+    detectors.emplace_back(make_unique<ImageDetector>("../Samples/Images/dog_bike_car.jpg",yolov4));
+    detectors.emplace_back(make_unique<VideoDetector>("../Samples/Videos/object_detection_test.mp4",yolov4_tiny));
+    detectors.emplace_back(make_unique<VideoDetector>("../Samples/Videos/Vehicle Dataset Sample 2.mp4",yolov4));
+    detectors.emplace_back(make_unique<CameraDetector>(0,yolov4_tiny)); 
 
     // Run detection for each detector
     for (auto& detector : detectors) {
-        detector->detect(net, classes);
+        detector->detect();
     }
 
 

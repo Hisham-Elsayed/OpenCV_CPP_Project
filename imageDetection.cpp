@@ -1,5 +1,5 @@
 #include "imageDetection.h"
-#include "yolo.h"
+
 
 using namespace cv;
 using namespace dnn;
@@ -8,15 +8,14 @@ using namespace std;
 /**
  * @brief Constructs an ImageDetector with the given image path.
  * @param path Path to the image file.
+ * @param yolo Reference to a YoloDetector instance to use for detection.
  */
-ImageDetector::ImageDetector(const std::string &path) : imagePath(path){}
+ImageDetector::ImageDetector(const std::string &path, YoloDetector& yolo) : imagePath(path), yolo(yolo) {}
 
 /**
  * @brief Detects objects in the image and displays the result.
- * @param net Reference to the loaded YOLO network.
- * @param classes Vector of class names.
  */
-void ImageDetector::detect(cv::dnn::Net& net, const std::vector<std::string>& classes)
+void ImageDetector::detect()
 {
     Mat image = imread(imagePath);
 
@@ -27,19 +26,19 @@ void ImageDetector::detect(cv::dnn::Net& net, const std::vector<std::string>& cl
 
     // Create a 4D blob from the image
     Mat blob;
-    blobFromImage(image, blob, 1/255.0, Size(inpWidth, inpHeight), Scalar(0,0,0), true, false);
+    blobFromImage(image, blob, 1/255.0, Size(YoloDetector::inpWidth, YoloDetector::inpHeight), Scalar(0,0,0), true, false);
 
     // Set the input to the network
-    net.setInput(blob);
+    yolo.getNet().setInput(blob);
 
     // Forward pass
     vector<Mat> outs;
-    net.forward(outs, getOutputsNames(net));
+    yolo.getNet().forward(outs, yolo.getOutputsNames());
 
     // Process detections and draw bounding boxes
-    postprocess(image, outs, net, classes);
+    yolo.postprocess(image, outs);
 
-    windowName = "YOLOv4-tiny Image Detection";
+    windowName = "Image Detection";
     
     // Display the image with resizable window
     namedWindow(windowName, WINDOW_NORMAL); 

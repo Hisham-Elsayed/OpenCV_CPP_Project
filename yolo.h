@@ -1,70 +1,81 @@
 #ifndef YOLO_H
 #define YOLO_H
+/**
+ * @file yolo.h
+ * @brief Declaration of the YoloDetector class, which encapsulates YOLO network loading, configuration, and detection utilities.
+ */
 
 #include "type.h"
+#include <string>
+#include <vector>
 
 
+
+ /**
+ * @class YoloDetector
+ * @brief Encapsulates YOLO network loading, configuration, and detection utilities.
+ */
 class YoloDetector
 {
     public:
+    /**
+    * @brief Constructs a YoloDetector with the given file paths.
+    * @param class_file Path to class names file.
+    * @param config_file Path to YOLO configuration file.
+    * @param weights_file Path to YOLO weights file.
+    */
+    YoloDetector(const std::string& class_file, const std::string& config_file, const std::string& weights_file);
 
+    /**
+    * @brief Loads the YOLO network and class names.
+    * @return True if loading is successful, false otherwise.
+    */
+    bool load();
+
+    /**
+    * @brief Provides access to the loaded YOLO network.
+    * @return Reference to the internal cv::dnn::Net object.
+    */
+    cv::dnn::Net& getNet();
+
+    /**
+    * @brief Get the names of the output layers of the network.
+    * @return Vector of output layer names.
+    */
+    std::vector<std::string> getOutputsNames() const;
+
+    /**
+    * @brief Draws a predicted bounding box with label on the frame.
+    * @param classId Class index.
+    * @param conf Confidence score.
+    * @param left Left coordinate of bounding box.
+    * @param top Top coordinate of bounding box.
+    * @param right Right coordinate of bounding box.
+    * @param bottom Bottom coordinate of bounding box.
+    * @param frame Frame to draw on.
+    */
+    void drawPred(int classId, float conf, int left, int top, int right, int bottom, cv::Mat& frame);
+
+    /**
+    * @brief Process the network outputs and draw bounding boxes on the frame.
+    * @param frame Frame to draw on.
+    * @param outs Network outputs.
+    */
+    void postprocess(cv::Mat& frame, const std::vector<cv::Mat>& outs);
+
+    static constexpr float confThreshold = 0.5f; ///< Confidence threshold for filtering weak detections.
+    static constexpr float nmsThreshold = 0.4f;  ///< Non-maximum suppression threshold.
+    static constexpr int inpWidth = 416;        ///< Width of network's input image.
+    static constexpr int inpHeight = 416;       ///< Height of network's input image.
 
 
     private:
+    std::string classesFile;
+    std::string modelConfiguration;
+    std::string modelWeights;
 
-
-
+    cv::dnn::Net net;
+    std::vector<std::string> classes;
 };
-
-
-
-
-
-
-
-
-
-/**
- * @file yolo.h
- * @brief Declarations for YOLO utility functions and parameters.
- */
-
-
-constexpr float confThreshold = 0.5f; ///< Confidence threshold for filtering weak detections.
-constexpr float nmsThreshold = 0.4f;  ///< Non-maximum suppression threshold.
-constexpr int inpWidth = 416;        ///< Width of network's input image.
-constexpr int inpHeight = 416;       ///< Height of network's input image.
-
-/**
- * @brief Get the names of the output layers of the network.
- * @param net Reference to the loaded YOLO network.
- * @return Reference of vector of output layer names.
- */
-const std::vector<std::string>& getOutputsNames(const cv::dnn::Net& net);
-
-/**
- * @brief Draws a predicted bounding box with label on the frame.
- * @param classId Class index.
- * @param conf Confidence score.
- * @param left Left coordinate of bounding box.
- * @param top Top coordinate of bounding box.
- * @param right Right coordinate of bounding box.
- * @param bottom Bottom coordinate of bounding box.
- * @param frame Frame to draw on.
- * @param classes Vector of class names.
- */
-void drawPred(int classId, float conf, int left, int top, int right, int bottom, cv::Mat& frame, const std::vector<std::string>& classes);
-
-/**
- * @brief Process the network outputs and draw bounding boxes on the frame.
- * @param frame Frame to draw on.
- * @param outs Network outputs.
- * @param net Reference to the loaded YOLO network.
- * @param classes Vector of class names.
- */
-void postprocess(cv::Mat& frame, const std::vector<cv::Mat>& outs, cv::dnn::Net& net, const std::vector<std::string>& classes);
-
-
-
 
 #endif 

@@ -1,5 +1,5 @@
 #include "cameraDetection.h"
-#include "yolo.h"
+
 
 using namespace cv;
 using namespace dnn;
@@ -7,16 +7,15 @@ using namespace std;
 
 /**
  * @brief Constructs a CameraDetector with the given camera index.
- * @param path Camera index (usually 0 for default camera).
+ * @param camIndex Camera index (usually 0 for default camera).
+ * @param yolo Reference to a YoloDetector instance to use for detection.
  */
-CameraDetector::CameraDetector(const int &path) : cam(path){}
+CameraDetector::CameraDetector(const int &camIndex, YoloDetector& yolo) : cam(camIndex), yolo(yolo){}
 
 /**
  * @brief Detects objects from the camera feed and displays the result in real time.
- * @param net Reference to the loaded YOLO network.
- * @param classes Vector of class names.
  */
-void CameraDetector::detect(cv::dnn::Net &net, const std::vector<std::string>& classes)
+void CameraDetector::detect()
 {
     VideoCapture cap(cam);        //to use webcam
     if (!cap.isOpened()) {
@@ -28,7 +27,7 @@ void CameraDetector::detect(cv::dnn::Net &net, const std::vector<std::string>& c
     int skip_frames = 2; // skip every 2 frames
     int frame_count = 0;
 
-    windowName = "YOLOv4-tiny Camera Detection";
+    windowName = "Camera Detection";
     
     // Display the camera with resizable window
     namedWindow(windowName, WINDOW_NORMAL); 
@@ -37,14 +36,15 @@ void CameraDetector::detect(cv::dnn::Net &net, const std::vector<std::string>& c
         frame_count++;
         if (frame_count % skip_frames != 0) continue; // skip frame
         Mat blob;
-        blobFromImage(frame, blob, 1/255.0, Size(inpWidth, inpHeight), Scalar(0,0,0), true, false);     //Preprocess the frame (resize, normalize, create blob)
-        net.setInput(blob);
+        blobFromImage(frame, blob, 1/255.0, Size(YoloDetector::inpWidth, YoloDetector::inpHeight), Scalar(0,0,0), true, false);     //Preprocess the frame (resize, normalize, create blob)
+        
+        yolo.getNet().setInput(blob);
 
         //Forward pass (run inference)
         vector<Mat> outs;
-        net.forward(outs, getOutputsNames(net));
+        yolo.getNet().forward(outs, yolo.getOutputsNames());
 
-        postprocess(frame, outs, net, classes);
+        yolo.postprocess(frame, outs);
 
         imshow(windowName, frame);
         if (waitKey(1) == 'q') break;
