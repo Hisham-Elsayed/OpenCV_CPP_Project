@@ -3,22 +3,44 @@
 
 #include "type.h"
 
+
+class YoloDetector
+{
+    public:
+
+
+
+    private:
+
+
+
+};
+
+
+
+
+
+
+
+
+
 /**
  * @file yolo.h
  * @brief Declarations for YOLO utility functions and parameters.
  */
 
-extern float confThreshold; ///< Confidence threshold for filtering weak detections.
-extern float nmsThreshold;  ///< Non-maximum suppression threshold.
-extern int inpWidth;        ///< Width of network's input image.
-extern int inpHeight;       ///< Height of network's input image.
+
+constexpr float confThreshold = 0.5f; ///< Confidence threshold for filtering weak detections.
+constexpr float nmsThreshold = 0.4f;  ///< Non-maximum suppression threshold.
+constexpr int inpWidth = 416;        ///< Width of network's input image.
+constexpr int inpHeight = 416;       ///< Height of network's input image.
 
 /**
  * @brief Get the names of the output layers of the network.
  * @param net Reference to the loaded YOLO network.
- * @return Vector of output layer names.
+ * @return Reference of vector of output layer names.
  */
-std::vector<std::string> getOutputsNames(const cv::dnn::Net& net);
+const std::vector<std::string>& getOutputsNames(const cv::dnn::Net& net);
 
 /**
  * @brief Draws a predicted bounding box with label on the frame.
@@ -31,7 +53,7 @@ std::vector<std::string> getOutputsNames(const cv::dnn::Net& net);
  * @param frame Frame to draw on.
  * @param classes Vector of class names.
  */
-void drawPred(int classId, float conf, int left, int top, int right, int bottom, cv::Mat& frame, std::vector<std::string>& classes);
+void drawPred(int classId, float conf, int left, int top, int right, int bottom, cv::Mat& frame, const std::vector<std::string>& classes);
 
 /**
  * @brief Process the network outputs and draw bounding boxes on the frame.
@@ -40,7 +62,7 @@ void drawPred(int classId, float conf, int left, int top, int right, int bottom,
  * @param net Reference to the loaded YOLO network.
  * @param classes Vector of class names.
  */
-void postprocess(cv::Mat& frame, const std::vector<cv::Mat>& outs, cv::dnn::Net& net, std::vector<std::string>& classes);
+void postprocess(cv::Mat& frame, const std::vector<cv::Mat>& outs, cv::dnn::Net& net, const std::vector<std::string>& classes);
 
 
 

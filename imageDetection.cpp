@@ -16,7 +16,7 @@ ImageDetector::ImageDetector(const std::string &path) : imagePath(path){}
  * @param net Reference to the loaded YOLO network.
  * @param classes Vector of class names.
  */
-void ImageDetector::detect(cv::dnn::Net& net, std::vector<std::string>& classes)
+void ImageDetector::detect(cv::dnn::Net& net, const std::vector<std::string>& classes)
 {
     Mat image = imread(imagePath);
 

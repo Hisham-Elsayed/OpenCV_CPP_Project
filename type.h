@@ -24,7 +24,7 @@ class Type
      * @param net Reference to the loaded YOLO network.
      * @param classes Vector of class names.
      */
-    virtual void detect(cv::dnn::Net& net, std::vector<std::string>& classes) = 0; //pure virtual function
+    virtual void detect(cv::dnn::Net& net, const std::vector<std::string>& classes) = 0; //pure virtual function
 
      /**
      * @brief Virtual destructor for safe polymorphic deletion.

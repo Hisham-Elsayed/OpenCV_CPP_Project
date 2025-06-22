@@ -21,7 +21,7 @@ class ImageDetector : public Type
      * @param net Reference to the loaded YOLO network.
      * @param classes Vector of class names.
      */
-    void detect(cv::dnn::Net& net, std::vector<std::string>& classes) override;
+    void detect(cv::dnn::Net& net, const std::vector<std::string>& classes) override;
 
 
     private:

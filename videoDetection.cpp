@@ -16,7 +16,7 @@ VideoDetector::VideoDetector(const std::string &path) : videoPath(path){}
  * @param net Reference to the loaded YOLO network.
  * @param classes Vector of class names.
  */
-void VideoDetector::detect(cv::dnn::Net &net, std::vector<std::string>& classes)
+void VideoDetector::detect(cv::dnn::Net &net, const std::vector<std::string>& classes)
 {
     VideoCapture cap(videoPath);
     if (!cap.isOpened()) {

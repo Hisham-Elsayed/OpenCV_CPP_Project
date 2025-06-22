@@ -16,7 +16,7 @@ CameraDetector::CameraDetector(const int &path) : cam(path){}
  * @param net Reference to the loaded YOLO network.
  * @param classes Vector of class names.
  */
-void CameraDetector::detect(cv::dnn::Net &net, std::vector<std::string>& classes)
+void CameraDetector::detect(cv::dnn::Net &net, const std::vector<std::string>& classes)
 {
     VideoCapture cap(cam);        //to use webcam
     if (!cap.isOpened()) {

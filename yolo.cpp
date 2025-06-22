@@ -1,9 +1,6 @@
 #include "yolo.h"
 
-float confThreshold = 0.5f;
-float nmsThreshold = 0.4f;
-int inpWidth = 416;
-int inpHeight = 416;
+
 
 using namespace cv;
 using namespace dnn;
@@ -12,9 +9,9 @@ using namespace std;
 /**
  * @brief Get the names of the output layers of the network.
  * @param net Reference to the loaded YOLO network.
- * @return Vector of output layer names.
+ * @return Reference of vector of output layer names.
  */
-vector<string> getOutputsNames(const Net& net) {
+const vector<string>& getOutputsNames(const Net& net) {
     static vector<string> names;
     if (names.empty()) {
         vector<int> outLayers = net.getUnconnectedOutLayers();
@@ -37,7 +34,7 @@ vector<string> getOutputsNames(const Net& net) {
  * @param frame Frame to draw on.
  * @param classes Vector of class names.
  */
-void drawPred(int classId, float conf, int left, int top, int right, int bottom, Mat& frame, vector<string>& classes) {
+void drawPred(int classId, float conf, int left, int top, int right, int bottom, Mat& frame, const vector<string>& classes) {
     rectangle(frame, Point(left, top), Point(right, bottom), Scalar(0, 255, 0), 3);
     string label = format("%.2f", conf);
     if (!classes.empty() && classId < static_cast<int>(classes.size()))
@@ -57,7 +54,7 @@ void drawPred(int classId, float conf, int left, int top, int right, int bottom,
  * @param net Reference to the loaded YOLO network.
  * @param classes Vector of class names.
  */
-void postprocess(Mat& frame, const vector<Mat>& outs, Net& net, vector<string>& classes) {
+void postprocess(Mat& frame, const vector<Mat>& outs, Net& net, const vector<string>& classes) {
     vector<int> classIds;
     vector<float> confidences;
     vector<Rect> boxes;
