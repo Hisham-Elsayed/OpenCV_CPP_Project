@@ -23,8 +23,10 @@ using namespace std;
  * @return int Returns 0 on successful execution.
  */
 int main() {
-    // Silence OpenCV logging output for cleaner console
-    cv::utils::logging::setLogLevel(cv::utils::logging::LOG_LEVEL_SILENT);  
+
+    #if defined(_WIN32) || defined(_WIN64)
+    cv::utils::logging::setLogLevel(cv::utils::logging::LOG_LEVEL_SILENT);  // silence logs
+    #endif
 
     // File paths for YOLO model and class names
     string classesFile = "/yolo/coco.names";
@@ -47,7 +49,7 @@ int main() {
     // Add detectors for image, video, and camera sources
     detectors.emplace_back(make_unique<ImageDetector>("../Samples/Images/dog_bike_car.jpg",yolov4));
     detectors.emplace_back(make_unique<VideoDetector>("../Samples/Videos/object_detection_test.mp4",yolov4_tiny));
-    detectors.emplace_back(make_unique<VideoDetector>("../Samples/Videos/Vehicle Dataset Sample 2.mp4",yolov4));
+    detectors.emplace_back(make_unique<VideoDetector>("../Samples/Videos/Vehicle Dataset Sample 2.mp4",yolov4_tiny));
     detectors.emplace_back(make_unique<CameraDetector>(0,yolov4_tiny)); 
 
     // Run detection for each detector
