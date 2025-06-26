@@ -17,7 +17,7 @@ The project supports detection on images, videos, and live camera feeds, using a
 > `cv::utils::logging::setLogLevel(cv::utils::logging::LOG_LEVEL_SILENT);`  
 > If you build on Linux, this line will be removed automatically.
 
-...
+---
 
 ## Features
 
@@ -81,7 +81,7 @@ To clone this project, run:
 ```sh
 git clone https://github.com/your-username/OpenCV_CPP_Project.git
 cd OpenCV_CPP_Project
-
+```
 ---
 
 ## Building the Project
