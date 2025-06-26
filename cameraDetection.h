@@ -2,7 +2,7 @@
 #define CAMERA_DETECTION
 
 #include "type.h"
-#include "yolo.h"
+#include "yoloDetection.h"
 
 /**
  * @class CameraDetector

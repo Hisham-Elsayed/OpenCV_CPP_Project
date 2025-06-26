@@ -2,7 +2,7 @@
 #define IMAGE_DETECTION_H
 
 #include "type.h"
-#include "yolo.h"
+#include "yoloDetection.h"
 
 /**
  * @class ImageDetector

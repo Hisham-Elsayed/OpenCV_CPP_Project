@@ -1,5 +1,5 @@
-#ifndef YOLO_H
-#define YOLO_H
+#pragma once
+
 /**
  * @file yolo.h
  * @brief Declaration of the YoloDetector class, which encapsulates YOLO network loading, configuration, and detection utilities.
@@ -77,5 +77,3 @@ class YoloDetector
     cv::dnn::Net net;
     std::vector<std::string> classes;
 };
-
-#endif 

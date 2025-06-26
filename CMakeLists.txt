@@ -4,7 +4,7 @@ find_package(OpenCV REQUIRED)
 add_executable(opencv_cpp 
 main.cpp
 imageDetection.cpp
-yolo.cpp
+yoloDetection.cpp
 videoDetection.cpp
 cameraDetection.cpp
 )

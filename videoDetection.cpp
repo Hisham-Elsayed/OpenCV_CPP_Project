@@ -1,5 +1,5 @@
 #include "videoDetection.h"
-#include "yolo.h"
+
 
 using namespace cv;
 using namespace dnn;

@@ -1,5 +1,3 @@
-#include "yolo.h"
-#include "type.h"
 #include "imageDetection.h"
 #include "videoDetection.h"
 #include "cameraDetection.h"

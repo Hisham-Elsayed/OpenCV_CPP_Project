@@ -9,7 +9,15 @@
 OpenCV_CPP_Project is a modern C++ application demonstrating object detection using OpenCV and the YOLO (You Only Look Once) algorithm.  
 The project supports detection on images, videos, and live camera feeds, using a modular, object-oriented design.
 
+- **SOLID Principles & Design Patterns:** The codebase demonstrates SOLID OOP principles and uses patterns like Dependency Injection, Strategy, and Polymorphism.
+
 ---
+
+> **Note:** On Windows, OpenCV logs are silenced in `main.cpp` using  
+> `cv::utils::logging::setLogLevel(cv::utils::logging::LOG_LEVEL_SILENT);`  
+> If you build on Linux, this line will be removed automatically.
+
+...
 
 ## Features
 
@@ -32,7 +40,7 @@ The project supports detection on images, videos, and live camera feeds, using a
 ├── main.cpp
 ├── type.h
 ├── videoDetection.cpp/h
-├── yolo.cpp/h
+├── yoloDetection.cpp/h
 ├── Samples/
 │   ├── Images/
 │   │   ├── dog_bike_car.jpg
@@ -63,6 +71,16 @@ The project supports detection on images, videos, and live camera feeds, using a
 - **CMake:** Version 3.10 or higher
 - **OpenCV:** Version 4.x installed and configured
 - **YOLO Files:** Place `coco.names`, `yolov4-tiny.cfg`, `yolov4-tiny.weights`, etc. in `C:\yolo\` (or update the paths in `main.cpp`)
+
+---
+
+## Getting Started
+
+To clone this project, run:
+
+```sh
+git clone https://github.com/your-username/OpenCV_CPP_Project.git
+cd OpenCV_CPP_Project
 
 ---
 
