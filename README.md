@@ -79,7 +79,7 @@ The project supports detection on images, videos, and live camera feeds, using a
 To clone this project, run:
 
 ```sh
-git clone https://github.com/your-username/OpenCV_CPP_Project.git
+git clone https://github.com/Hisham-Elsayed/OpenCV_CPP_Project.git
 cd OpenCV_CPP_Project
 ```
 ---
